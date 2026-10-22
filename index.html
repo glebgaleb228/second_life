@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Друге життя — Речі, які заслуговують на друге життя</title>
+  <!-- Підключення шрифтів Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Верхня інфо-строка -->
+  <div class="top-banner">
+    <span>БЕЗКОШТОВНА ДОСТАВКА ВІД 3 000 ₴</span>
+    <span class="dot">•</span>
+    <span>ПОВЕРНЕННЯ ПРОТЯГОМ 14 ДНІВ</span>
+  </div>
+
+  <!-- Шапка сайту -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">друге життя</span>
+      </a>
+
+      <!-- Функціональна навігація -->
+      <nav class="nav">
+        <a href="#catalog" class="nav-link">Каталог</a>
+        <a href="#features" class="nav-link">Як це працює</a>
+        <a href="#catalog" class="nav-link">Як ми перевіряємо</a>
+        <a href="#hero" class="nav-link">Історії</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn" aria-label="Пошук">🔍</button>
+        <button class="icon-btn" aria-label="Профіль">👤</button>
+        <!-- Кнопка обраного -->
+        <button id="wishlist-modal-btn" class="icon-btn wishlist-icon-btn" aria-label="Обране">❤️ <span id="wishlist-counter">0</span></button>
+        <!-- Кнопка кошика -->
+        <button id="cart-modal-btn" class="icon-btn wishlist-icon-btn" aria-label="Кошик">🛍️ <span id="cart-counter">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Секція -->
+  <section class="hero" id="hero">
+    <div class="hero-left">
+      <div class="hero-content">
+        <span class="subtitle">ПЕРЕВІРЕНО РУКАМИ. ОБРАНО З ЛЮБОВ'Ю.</span>
+        
+        <h1 class="hero-title">
+          Речі, які заслуговують на <i>друге життя</i>
+        </h1>
+
+        <p class="hero-description">
+          Знаходимо речі з історією, професійно відновлюємо та даємо чесну гарантію. 
+          Щоб ви купували не нове — а краще.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#catalog" class="btn btn-primary">Дивитися каталог →</a>
+          <a href="#" class="btn btn-link">Побачити до / після</a>
+        </div>
+
+        <div class="rating-box">
+          <div class="avatars">
+            <span class="avatar bg-1">M</span>
+            <span class="avatar bg-2">O</span>
+            <span class="avatar bg-3">I</span>
+          </div>
+          <div class="rating-info">
+            <strong>4.9 / 5</strong>
+            <span>за 268 відгуками</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="badge-100">
+        <span>100%</span>
+        <small>ПЕРЕВІРЕНО</small>
+      </div>
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1000&q=80" alt="Інтер'єр" class="hero-img">
+
+      <div class="floating-card">
+        <div class="card-left">
+          <div>
+            <span class="tag">ВІНТАЖ • ВІДНОВЛЕНО</span>
+            <div class="card-title">Крісло Mid-Century</div>
+          </div>
+        </div>
+        <div class="card-price">8 500 ₴</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секція переваг -->
+  <section class="features" id="features">
+    <div class="container features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🛡️</div>
+        <div>
+          <h4>Гарантія до 12 міс.</h4>
+          <p>На кожну річ</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔧</div>
+        <div>
+          <h4>Перевірка майстром</h4>
+          <p>За 42 пунктами</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">↩️</div>
+        <div>
+          <h4>14 днів на повернення</h4>
+          <p>Без зайвих питань</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <div>
+          <h4>Дбайлива доставка</h4>
+          <p>Надійне пакування</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Секція Каталогу -->
+  <section class="catalog" id="catalog">
+    <div class="container">
+      
+      <!-- Заголовок каталогу -->
+      <div class="catalog-header">
+        <div class="catalog-title-wrap">
+          <span class="subtitle">НАШ КАТАЛОГ</span>
+          <h2 class="section-title">Обрані речі чекають на дім</h2>
+        </div>
+
+        <!-- Категорії / Фільтри -->
+        <div class="catalog-categories">
+          <button class="category-btn active">Усі речі</button>
+          <button class="category-btn">Меблі</button>
+          <button class="category-btn">Освітлення</button>
+          <button class="category-btn">Декор & Арт</button>
+          <button class="category-btn">Акустика & Техніка</button>
+        </div>
+      </div>
+
+      <!-- Сітка товарів -->
+      <div class="products-grid">
+
+        <!-- Товар 1 -->
+        <div class="product-card" data-id="1" data-category="Меблі" data-specs="Матеріал: Масив дуба; Вік: 1970-ті роки (Скандинавія); Стан: Відновлено майстром; Гарантія: 12 місяців.">
+          <div class="product-image-container">
+            <span class="product-badge badge-restored">Відновлено</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=600&q=80" alt="Скандинавський стілець" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">МЕБЛІ • 1970-ті</span>
+            <h3 class="product-title">Скандинавський обідній стілець з дуба</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Стан: Відмінний (42/42 тестів)
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">4 200 ₴</span>
+                <span class="old-price">5 500 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Товар 2 -->
+        <div class="product-card" data-id="2" data-category="Освітлення" data-specs="Матеріал: Латунь, матове скло; Висота: 160 см; Стан: Оригінальна патина, проведено повне чищення дротів.">
+          <div class="product-image-container">
+            <span class="product-badge badge-vintage">Вінтаж</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80" alt="Латунний торшер" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">ОСВІТЛЕННЯ</span>
+            <h3 class="product-title">Вінтажний торшер з латуні та скла</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Стан: Оригінальний / Патина
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">3 800 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Товар 3 -->
+        <div class="product-card" data-id="3" data-category="Меблі" data-specs="Стиль: Баухауз; Оббивка: Еко-шкіра преміум класу (нова); Каркас: Хромована сталь.">
+          <div class="product-image-container">
+            <span class="product-badge badge-restored">Відновлено</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?auto=format&fit=crop&w=600&q=80" alt="Крісло Баухауз" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">МЕБЛІ</span>
+            <h3 class="product-title">Крісло в стилі Bauhaus з шкіряним покриттям</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Нова натуральна оббивка
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">12 400 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Товар 4 -->
+        <div class="product-card" data-id="4" data-category="Акустика & Техніка" data-specs="Тип: Плівковий фотоапарат; Виробник: Японія; Комплектація: Об'єктив 50mm f/1.4, повністю перебраний механізм.">
+          <div class="product-image-container">
+            <span class="product-badge badge-rare">Рідкість</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80" alt="Плівковий фотоапарат" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">ТЕХНІКА & АРТ</span>
+            <h3 class="product-title">Плівковий фотоапарат Olympus OM-1</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Повністю обслуговано
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">7 900 ₴</span>
+                <span class="old-price">9 200 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Товар 5 -->
+        <div class="product-card" data-id="5" data-category="Декор & Арт" data-specs="Походження: Західна Європа; Матеріал: Шамотна глина, ручний розпис; Період: 1960-ті.">
+          <div class="product-image-container">
+            <span class="product-badge badge-restored">Відновлено</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1532372688391-d87219808362?auto=format&fit=crop&w=600&q=80" alt="Керамічна ваза" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">ДЕКОР</span>
+            <h3 class="product-title">Керамічна ваза ручної роботи 1960-х</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Ідеальний стан
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">1 850 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Товар 6 -->
+        <div class="product-card" data-id="6" data-category="Акустика & Техніка" data-specs="Бренд: Technics; Стан голки: Нова (Audio-Technica); Привід: Прямий (Direct Drive).">
+          <div class="product-image-container">
+            <span class="product-badge badge-vintage">Вінтаж</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80" alt="Програвач вінілу" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">АКУСТИКА</span>
+            <h3 class="product-title">Вініловий програвач Technics Hi-Fi</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Нова голка / Новий ремінь
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">11 500 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Додаткові товари -->
+        <div class="product-card hidden-card" data-id="7" data-category="Меблі" data-specs="Тип: Двомісний диван; Каркас: Натуральне дерево; Тканина: Букльо преміум-класу.">
+          <div class="product-image-container">
+            <span class="product-badge badge-restored">Відновлено</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80" alt="Диван" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">МЕБЛІ • РЕТРО</span>
+            <h3 class="product-title">Двомісний диван у стилі Мід-Сентчурі</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Повна реставрація каркаса
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">18 900 ₴</span>
+                <span class="old-price">22 000 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card hidden-card" data-id="8" data-category="Освітлення" data-specs="Дизайн: Космічна ера (Space Age); Матеріал: Метал, акрил; Цоколь: E27.">
+          <div class="product-image-container">
+            <span class="product-badge badge-vintage">Вінтаж</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" alt="Настільна лампа" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">ОСВІТЛЕННЯ</span>
+            <h3 class="product-title">Настільна лампа з абажуром Space Age</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Замінено проводку, оригінал
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">2 950 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card hidden-card" data-id="9" data-category="Декор & Арт" data-specs="Техніка: Полотно, масло; Рік: 1982; Рама: Дерев'яний багет ручної роботи.">
+          <div class="product-image-container">
+            <span class="product-badge badge-rare">Рідкість</span>
+            <button class="wishlist-btn" aria-label="В обране">❤️</button>
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="Картина" class="product-image">
+          </div>
+          <div class="product-info">
+            <span class="product-category">ДЕКОР & АРТ</span>
+            <h3 class="product-title">Авторський живопис маслом, 1982 рік</h3>
+            <div class="product-condition">
+              <span class="condition-dot"></span> Збережено в оригінальній рамі
+            </div>
+            <div class="product-footer">
+              <div class="price-block">
+                <span class="price">6 400 ₴</span>
+              </div>
+              <button class="add-to-cart-btn" aria-label="Купити">🛒</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Кнопка розширення каталогу -->
+      <div class="catalog-more">
+        <button id="load-more-btn" class="btn btn-primary">Показати ще речі →</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- МОДАЛЬНЕ ВІКНО ОБРАНОГО -->
+  <div id="wishlist-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Ваші улюблені речі (<span id="modal-counter">0</span>)</h3>
+        <button id="close-modal-btn" class="close-modal">&times;</button>
+      </div>
+      <div id="wishlist-items-container" class="modal-body">
+        <p class="empty-wishlist-text">У вас поки немає обраних речей 💔</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНЕ ВІКНО КОШИКА -->
+  <div id="cart-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Кошик покупок (<span id="cart-modal-counter">0</span>)</h3>
+        <button id="close-cart-modal-btn" class="close-modal">&times;</button>
+      </div>
+      <div id="cart-items-container" class="modal-body">
+        <p class="empty-wishlist-text">Ваш кошик порожній 🛍️</p>
+      </div>
+      <div class="cart-modal-footer" id="cart-footer" style="display: none; padding: 20px; border-top: 1px solid rgba(0,0,0,0.05); text-align: right;">
+        <strong>Разом до сплати: <span id="cart-total-price">0 ₴</span></strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНЕ ВІКНО ДЕТАЛЕЙ ТОВАРУ ТА ФОРМИ ЗАМОВЛЕННЯ -->
+  <div id="product-detail-modal" class="modal-overlay">
+    <div class="modal-content product-detail-content">
+      <button id="close-product-modal" class="close-modal">&times;</button>
+      <div class="product-detail-grid">
+        <div class="product-detail-img-wrap">
+          <img id="detail-img" src="" alt="" class="product-detail-img">
+        </div>
+        <div class="product-detail-info">
+          <span id="detail-category" class="product-category"></span>
+          <h2 id="detail-title" class="section-title" style="font-size: 28px; margin-bottom: 10px;"></h2>
+          <div id="detail-price" class="price" style="font-size: 22px; margin-bottom: 15px;"></div>
+          
+          <div class="detail-specs-box">
+            <h4>Характеристики та стан:</h4>
+            <p id="detail-specs" style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;"></p>
+          </div>
+
+          <!-- Форма замовлення -->
+          <form id="order-form" class="order-form">
+            <h4>Швидке замовлення</h4>
+            <input type="text" id="buyer-name" placeholder="Ваше ім'я" required class="form-input">
+            <input type="tel" id="buyer-phone" placeholder="Номер телефону" required class="form-input">
+            <input type="text" id="buyer-address" placeholder="Місто, відділення Нової Пошти" required class="form-input">
+            <button type="submit" class="btn btn-primary" style="width: 100%; text-align: center;">Замовити річ</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Підключення скрипта -->
+  <script src="script.js" defer></script>
+</body>
+</html>
