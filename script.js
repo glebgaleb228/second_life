@@ -1,116 +1,244 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const cards = [...document.querySelectorAll('.product-card')];
-  const categoryButtons = [...document.querySelectorAll('.category-btn')];
-  const loadMore = document.getElementById('load-more-btn');
-  const search = document.getElementById('catalog-search');
-  const readStore = (key) => { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } };
-  const wishlist = readStore('dl-wishlist');
-  const cart = readStore('dl-cart');
-  const save = () => { localStorage.setItem('dl-wishlist', JSON.stringify(wishlist)); localStorage.setItem('dl-cart', JSON.stringify(cart)); };
-  let activeCategory = 'Усі речі';
-  let showAll = false;
-  const formatPrice = (value) => `${Number(value).toLocaleString('uk-UA')} ₴`;
-  const details = (card) => ({
-    id: card.dataset.id,
-    title: card.querySelector('.product-title').textContent.trim(),
-    category: card.querySelector('.product-category').textContent.trim(),
-    price: Number(card.querySelector('.price').textContent.replace(/\D/g, '')),
-    image: card.querySelector('.product-image').src,
-    specs: card.dataset.specs || '',
-    story: card.dataset.story || ''
-  });
-  const persistState = () => { save(); renderWishlist(); renderCart(); };
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. Кнопка «Показати ще речі»
+  const loadMoreBtn = document.getElementById('load-more-btn');
+  const hiddenCards = document.querySelectorAll('.hidden-card');
 
-  // Restore saved favorites and cart, and keep product controls in sync.
-  cards.forEach(card => {
-    const item = details(card);
-    const heart = card.querySelector('.wishlist-btn');
-    if (wishlist.some(saved => saved.id === item.id)) { heart.classList.add('active'); heart.textContent = '💖'; }
-    heart.addEventListener('click', event => {
-      event.stopPropagation();
-      const index = wishlist.findIndex(saved => saved.id === item.id);
-      if (index < 0) { wishlist.push(item); heart.classList.add('active'); heart.textContent = '💖'; }
-      else { wishlist.splice(index, 1); heart.classList.remove('active'); heart.textContent = '❤️'; }
-      persistState();
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function() {
+      hiddenCards.forEach(card => {
+        card.classList.remove('hidden-card');
+        card.classList.add('show-card');
+      });
+      loadMoreBtn.style.display = 'none';
     });
-    card.querySelector('.add-to-cart-btn').addEventListener('click', event => {
-      event.stopPropagation();
-      cart.push(item);
-      persistState();
-      document.getElementById('cart-modal').classList.add('open');
-    });
-    card.addEventListener('click', event => {
-      if (event.target.closest('button')) return;
-      const product = details(card);
-      document.getElementById('detail-img').src = product.image;
-      document.getElementById('detail-img').alt = product.title;
-      document.getElementById('detail-category').textContent = product.category;
-      document.getElementById('detail-title').textContent = product.title;
-      document.getElementById('detail-price').textContent = formatPrice(product.price);
-      document.getElementById('detail-specs').textContent = product.specs;
-      document.getElementById('detail-story').textContent = product.story;
-      document.getElementById('product-detail-modal').classList.add('open');
+  }
+
+  // 2. Фільтрація за категоріями
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const allCards = document.querySelectorAll('.product-card');
+
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      categoryBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
+      const selectedCategory = this.textContent.trim();
+
+      allCards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        if (selectedCategory === 'Усі речі' || cardCategory === selectedCategory) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     });
   });
 
-  const renderWishlist = () => {
-    const container = document.getElementById('wishlist-items-container');
-    document.getElementById('wishlist-counter').textContent = wishlist.length;
-    document.getElementById('modal-counter').textContent = wishlist.length;
-    container.innerHTML = wishlist.length ? wishlist.map(item => `<div class="wishlist-modal-item" data-id="${item.id}"><div class="wishlist-item-left"><img src="${item.image}" alt="" class="wishlist-item-img"><div><h4 class="wishlist-item-title"></h4><span class="wishlist-item-price">${formatPrice(item.price)}</span></div></div><button class="remove-wishlist-item" aria-label="Видалити з обраного">×</button></div>`).join('') : '<p class="empty-wishlist-text">У вас поки немає обраних речей 💔</p>';
-    wishlist.forEach((item, index) => { const row = container.children[index]; row.querySelector('.wishlist-item-title').textContent = item.title; });
-    container.querySelectorAll('.remove-wishlist-item').forEach(button => button.addEventListener('click', () => {
-      const id = button.closest('.wishlist-modal-item').dataset.id;
-      const index = wishlist.findIndex(item => item.id === id); if (index >= 0) wishlist.splice(index, 1);
-      const heart = document.querySelector(`.product-card[data-id="${id}"] .wishlist-btn`);
-      if (heart) { heart.classList.remove('active'); heart.textContent = '❤️'; }
-      persistState();
-    }));
-  };
-  const renderCart = () => {
-    const container = document.getElementById('cart-items-container');
-    document.getElementById('cart-counter').textContent = cart.length;
-    document.getElementById('cart-modal-counter').textContent = cart.length;
-    document.getElementById('cart-footer').style.display = cart.length ? 'block' : 'none';
-    container.innerHTML = cart.length ? cart.map((item, index) => `<div class="wishlist-modal-item" data-index="${index}"><div class="wishlist-item-left"><img src="${item.image}" alt="" class="wishlist-item-img"><div><h4 class="wishlist-item-title"></h4><span class="wishlist-item-price">${formatPrice(item.price)}</span></div></div><button class="remove-cart-item" aria-label="Видалити з кошика">×</button></div>`).join('') : '<p class="empty-wishlist-text">Ваш кошик порожній 🛍️</p>';
-    cart.forEach((item, index) => { container.children[index].querySelector('.wishlist-item-title').textContent = item.title; });
-    document.getElementById('cart-total-price').textContent = formatPrice(cart.reduce((sum, item) => sum + Number(item.price), 0));
-    container.querySelectorAll('.remove-cart-item').forEach(button => button.addEventListener('click', () => { cart.splice(Number(button.closest('.wishlist-modal-item').dataset.index), 1); persistState(); }));
-  };
-  const filterCards = () => {
-    const query = (search?.value || '').trim().toLocaleLowerCase('uk');
-    cards.forEach((card, index) => {
-      const categoryMatch = activeCategory === 'Усі речі' || card.dataset.category === activeCategory;
-      const searchMatch = !query || card.textContent.toLocaleLowerCase('uk').includes(query);
-      const visible = categoryMatch && searchMatch && (showAll || index < 6 || activeCategory !== 'Усі речі' || query);
-      card.classList.toggle('filtered-out', !visible);
-      card.classList.toggle('show-card', visible && index >= 6);
-    });
-    if (loadMore) loadMore.hidden = showAll || Boolean(query) || activeCategory !== 'Усі речі';
-  };
-  categoryButtons.forEach(button => button.addEventListener('click', () => {
-    categoryButtons.forEach(item => { item.classList.remove('active'); item.setAttribute('aria-pressed', 'false'); });
-    button.classList.add('active'); button.setAttribute('aria-pressed', 'true');
-    activeCategory = button.textContent.trim(); filterCards();
-  }));
-  search?.addEventListener('input', filterCards);
-  loadMore?.addEventListener('click', () => { showAll = true; filterCards(); });
+  // 3. Обране (Wishlist)
+  const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+  const wishlistModalBtn = document.getElementById('wishlist-modal-btn');
+  const wishlistModal = document.getElementById('wishlist-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const wishlistContainer = document.getElementById('wishlist-items-container');
+  const wishlistCounter = document.getElementById('wishlist-counter');
+  const modalCounter = document.getElementById('modal-counter');
 
-  const modalIds = ['wishlist-modal', 'cart-modal', 'product-detail-modal'];
-  const closeAll = () => modalIds.forEach(id => document.getElementById(id).classList.remove('open'));
-  document.getElementById('wishlist-modal-btn').addEventListener('click', () => document.getElementById('wishlist-modal').classList.add('open'));
-  document.getElementById('cart-modal-btn').addEventListener('click', () => document.getElementById('cart-modal').classList.add('open'));
-  document.getElementById('close-modal-btn').addEventListener('click', closeAll);
-  document.getElementById('close-cart-modal-btn').addEventListener('click', closeAll);
-  document.getElementById('close-product-modal').addEventListener('click', closeAll);
-  modalIds.forEach(id => document.getElementById(id).addEventListener('click', event => { if (event.target.id === id) closeAll(); }));
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') closeAll(); });
-  document.getElementById('order-form').addEventListener('submit', event => {
-    event.preventDefault();
-    const name = document.getElementById('buyer-name').value.trim();
-    const item = document.getElementById('detail-title').textContent;
-    alert(`Дякуємо, ${name}! Ми зателефонуємо, щоб підтвердити замовлення «${item}».`);
-    event.currentTarget.reset(); closeAll();
+  let wishlist = [];
+
+  wishlistButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation(); // Щоб не відкривалось модальне вікно товару
+      this.classList.toggle('active');
+
+      const card = this.closest('.product-card');
+      const productId = card.getAttribute('data-id');
+      const productTitle = card.querySelector('.product-title').textContent;
+      const productPrice = card.querySelector('.price').textContent;
+      const productImage = card.querySelector('.product-image').src;
+
+      if (this.classList.contains('active')) {
+        this.textContent = '💖';
+        wishlist.push({ id: productId, title: productTitle, price: productPrice, image: productImage });
+      } else {
+        this.textContent = '❤️';
+        wishlist = wishlist.filter(item => item.id !== productId);
+      }
+
+      updateWishlistUI();
+    });
   });
-  renderWishlist(); renderCart(); filterCards();
+
+  function updateWishlistUI() {
+    wishlistCounter.textContent = wishlist.length;
+    modalCounter.textContent = wishlist.length;
+
+    if (wishlist.length === 0) {
+      wishlistContainer.innerHTML = `<p class="empty-wishlist-text">У вас поки немає обраних речей 💔</p>`;
+      return;
+    }
+
+    let html = '';
+    wishlist.forEach(item => {
+      html += `
+        <div class="wishlist-modal-item" data-id="${item.id}">
+          <div class="wishlist-item-left">
+            <img src="${item.image}" alt="${item.title}" class="wishlist-item-img">
+            <div>
+              <h4 class="wishlist-item-title">${item.title}</h4>
+              <span class="wishlist-item-price">${item.price}</span>
+            </div>
+          </div>
+          <button class="remove-wishlist-item" title="Видалити">❌</button>
+        </div>
+      `;
+    });
+
+    wishlistContainer.innerHTML = html;
+
+    wishlistContainer.querySelectorAll('.remove-wishlist-item').forEach(remBtn => {
+      remBtn.addEventListener('click', function() {
+        const itemElement = this.closest('.wishlist-modal-item');
+        const idToRemove = itemElement.getAttribute('data-id');
+
+        const cardToUncheck = document.querySelector(`.product-card[data-id="${idToRemove}"]`);
+        if (cardToUncheck) {
+          const heartBtn = cardToUncheck.querySelector('.wishlist-btn');
+          heartBtn.classList.remove('active');
+          heartBtn.textContent = '❤️';
+        }
+
+        wishlist = wishlist.filter(item => item.id !== idToRemove);
+        updateWishlistUI();
+      });
+    });
+  }
+
+  wishlistModalBtn.addEventListener('click', (e) => { e.preventDefault(); wishlistModal.classList.add('open'); });
+  closeModalBtn.addEventListener('click', () => wishlistModal.classList.remove('open'));
+  wishlistModal.addEventListener('click', (e) => { if (e.target === wishlistModal) wishlistModal.classList.remove('open'); });
+
+
+  // 4. Кошик покупок (Cart)
+  const cartModalBtn = document.getElementById('cart-modal-btn');
+  const cartModal = document.getElementById('cart-modal');
+  const closeCartModalBtn = document.getElementById('close-cart-modal-btn');
+  const cartContainer = document.getElementById('cart-items-container');
+  const cartCounter = document.getElementById('cart-counter');
+  const cartModalCounter = document.getElementById('cart-modal-counter');
+  const cartFooter = document.getElementById('cart-footer');
+  const cartTotalPrice = document.getElementById('cart-total-price');
+  const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+  let cart = [];
+
+  addToCartButtons.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const card = this.closest('.product-card');
+      const productId = card.getAttribute('data-id');
+      const productTitle = card.querySelector('.product-title').textContent;
+      const productPriceStr = card.querySelector('.price').textContent;
+      const productImage = card.querySelector('.product-image').src;
+
+      const priceNum = parseInt(productPriceStr.replace(/\D/g, ''));
+
+      cart.push({ id: productId, title: productTitle, price: priceNum, image: productImage });
+      updateCartUI();
+
+      // Автоматичне відкриття кошика при додаванні
+      cartModal.classList.add('open');
+    });
+  });
+
+  function updateCartUI() {
+    cartCounter.textContent = cart.length;
+    cartModalCounter.textContent = cart.length;
+
+    if (cart.length === 0) {
+      cartContainer.innerHTML = `<p class="empty-wishlist-text">Ваш кошик порожній 🛍️</p>`;
+      cartFooter.style.display = 'none';
+      return;
+    }
+
+    cartFooter.style.display = 'block';
+    let html = '';
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      total += item.price;
+      html += `
+        <div class="wishlist-modal-item" data-index="${index}">
+          <div class="wishlist-item-left">
+            <img src="${item.image}" alt="${item.title}" class="wishlist-item-img">
+            <div>
+              <h4 class="wishlist-item-title">${item.title}</h4>
+              <span class="wishlist-item-price">${item.price.toLocaleString()} ₴</span>
+            </div>
+          </div>
+          <button class="remove-cart-item" title="Видалити">❌</button>
+        </div>
+      `;
+    });
+
+    cartContainer.innerHTML = html;
+    cartTotalPrice.textContent = total.toLocaleString() + ' ₴';
+
+    cartContainer.querySelectorAll('.remove-cart-item').forEach((remBtn, idx) => {
+      remBtn.addEventListener('click', function() {
+        cart.splice(idx, 1);
+        updateCartUI();
+      });
+    });
+  }
+
+  cartModalBtn.addEventListener('click', (e) => { e.preventDefault(); cartModal.classList.add('open'); });
+  closeCartModalBtn.addEventListener('click', () => cartModal.classList.remove('open'));
+  cartModal.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.classList.remove('open'); });
+
+
+  // 5. Модальне вікно деталей товару та форма замовлення
+  const productDetailModal = document.getElementById('product-detail-modal');
+  const closeProductModal = document.getElementById('close-product-modal');
+  const detailImg = document.getElementById('detail-img');
+  const detailCategory = document.getElementById('detail-category');
+  const detailTitle = document.getElementById('detail-title');
+  const detailPrice = document.getElementById('detail-price');
+  const detailSpecs = document.getElementById('detail-specs');
+  const orderForm = document.getElementById('order-form');
+
+  allCards.forEach(card => {
+    card.addEventListener('click', function(e) {
+      // Якщо клікнули на сердечко чи кнопку кошика — не відкриваємо деталі
+      if (e.target.closest('.wishlist-btn') || e.target.closest('.add-to-cart-btn')) return;
+
+      const title = card.querySelector('.product-title').textContent;
+      const category = card.querySelector('.product-category').textContent;
+      const price = card.querySelector('.price').textContent;
+      const img = card.querySelector('.product-image').src;
+      const specs = card.getAttribute('data-specs');
+
+      detailImg.src = img;
+      detailCategory.textContent = category;
+      detailTitle.textContent = title;
+      detailPrice.textContent = price;
+      detailSpecs.textContent = specs;
+
+      productDetailModal.classList.add('open');
+    });
+  });
+
+  closeProductModal.addEventListener('click', () => productDetailModal.classList.remove('open'));
+  productDetailModal.addEventListener('click', (e) => { if (e.target === productDetailModal) productDetailModal.classList.remove('open'); });
+
+  // Обробка форми замовлення
+  orderForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('buyer-name').value;
+    const phone = document.getElementById('buyer-phone').value;
+
+    alert(`Дякуємо за замовлення, ${name}! Ми зателефонуємо на номер ${phone} для підтвердження деталі доставки.`);
+    orderForm.reset();
+    productDetailModal.classList.remove('open');
+  });
 });
