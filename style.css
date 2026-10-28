@@ -1,4 +1,4 @@
-/* Перемінні стилей */
+/* Спільні кольори та шрифти: змінюйте їх тут, щоб узгоджено оновити вигляд усього сайту. */
 :root {
   --bg-main: #F7F5EE;
   --bg-dark: #193326;
@@ -27,6 +27,7 @@ body {
 }
 
 .container {
+  /* Обмежуємо ширину вмісту та залишаємо однакові поля з боків сторінки. */
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 20px;
@@ -139,7 +140,7 @@ body {
   font-weight: bold;
 }
 
-/* 3. Hero Секція */
+/* 3. Початковий екран */
 .hero {
   display: flex;
   min-height: calc(100vh - 100px);
@@ -268,7 +269,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Права сторона (Картинка) */
+/* Права частина початкового екрана з фотографією та накладеною карткою товару. */
 .hero-right {
   flex: 1;
   position: relative;
@@ -435,6 +436,7 @@ body {
 }
 
 .product-card {
+  /* Картка є клікабельною цілком; кнопки всередині обробляються окремо у script.js. */
   background: white;
   border-radius: 8px;
   overflow: hidden;
@@ -452,10 +454,12 @@ body {
 }
 
 .product-card.hidden-card {
+  /* Початковий стан додаткових товарів до натискання кнопки «Показати ще речі». */
   display: none !important;
 }
 
 .product-card.show-card {
+  /* Клас дає показаній картці коротку появу, коли каталог розгортається. */
   display: flex !important;
   animation: fadeInUp 0.4s forwards ease-in-out;
 }
@@ -624,7 +628,7 @@ body {
   margin-top: 48px;
 }
 
-/* Модальні вікна */
+/* Загальна основа модальних вікон: затемнення сторінки та центрування панелі. */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -744,7 +748,7 @@ body {
 
 .remove-wishlist-item:hover { opacity: 1; }
 
-/* Деталі товару та форма */
+/* Деталі товару та форми: сітка перебудовується в один стовпець на вузькому екрані. */
 .product-detail-content {
   max-width: 900px;
   max-height: 90vh;
@@ -822,7 +826,7 @@ body {
   z-index: 10;
 }
 
-/* Адаптивність */
+/* Основні адаптивні правила для планшетів і телефонів. */
 @media (max-width: 992px) {
   .hero { flex-direction: column; }
   .nav { display: none; }
@@ -845,7 +849,8 @@ body {
   .catalog-categories { gap: 6px; }
   .category-btn { padding: 8px 14px; font-size: 12px; }
 }
-/* Refined storefront and dedicated content sections */
+/* Додаткове оформлення секцій, пошуку, станів фокусу та інтерактивних елементів. */
+/* Ці правила розташовані нижче базових, тому точково уточнюють їхній вигляд. */
 :root { --line: rgba(32,43,37,.12); --shadow-soft: 0 20px 55px rgba(30,42,35,.12); }
 ::selection { background: #d5a18c; color: #183a30; }
 :focus-visible { outline: 3px solid #c47455; outline-offset: 3px; }
@@ -894,6 +899,7 @@ body { -webkit-font-smoothing: antialiased; }
 .remove-cart-item { background:none; border:0; cursor:pointer; font-size:23px; color:var(--text-muted); }
 .form-input { border-radius:6px; }
 .form-input:focus { box-shadow:0 0 0 3px rgba(184,95,67,.12); }
+/* Пошук і фільтри приховують картки, що не відповідають вибраному запиту. */
 .product-card.filtered-out { display:none !important; }
 #load-more-btn[hidden] { display:none; }
 .journey-section { padding:92px 0 98px; background:#ece9df; }
@@ -944,8 +950,10 @@ body { -webkit-font-smoothing: antialiased; }
 .detail-story-box { margin:-4px 0 20px; padding:18px 18px 17px 20px; border-left:2px solid var(--accent-orange); background:#f7f4ed; }
 .detail-story-box>span { display:block; margin-bottom:8px; color:var(--accent-orange); font-size:9px; font-weight:600; letter-spacing:.16em; }
 .detail-story-box p { color:#535d55; font:17px/1.5 var(--font-serif); }
+/* На середніх екранах зменшуємо відступи, щоб секції не стискалися. */
 @media (max-width:992px) { .hero { min-height:auto; } .hero-left { padding:64px clamp(24px,7vw,72px); } .hero-right { height:min(62vw,500px); min-height:340px; } .search-box { width:160px; } .catalog { padding:72px 0; } }
 @media (max-width:850px) { .inspection-layout { gap:34px; } .inspection-visual,.inspection-visual img { min-height:420px; height:420px; } .stories-grid { grid-template-columns:1fr 1fr; } .story-featured { grid-column:1/-1; display:grid; grid-template-columns:1.1fr 1fr; } .story-featured>img { height:100%; min-height:260px; } }
+/* На телефонах навігація та фільтри прокручуються горизонтально, а картки стають одноколонковими. */
 @media (max-width:600px) {
   .top-banner { font-size:9px; letter-spacing:.08em; }
   .header { margin-bottom:54px; }
@@ -979,7 +987,7 @@ body { -webkit-font-smoothing: antialiased; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
 
-/* Cart checkout step */
+/* Підсумок кошика та крок оформлення з контактною формою. */
 .cart-modal-footer { padding:20px 22px 22px; border-top:1px solid var(--line); background:#fbfaf6; }
 .cart-summary { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:16px; text-align:left; }
 .cart-summary>div { display:grid; gap:2px; }

@@ -1,5 +1,6 @@
+// Запускаємо код лише після того, як браузер побудував HTML-елементи сторінки.
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Категорії та кнопка розгортання каталогу
+  // 1. Категорії, пошук і розгортання каталогу
   const loadMoreBtn = document.getElementById('load-more-btn');
   const categoryBtns = document.querySelectorAll('.category-btn');
   const allCards = document.querySelectorAll('.product-card');
@@ -9,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
   let selectedCategory = 'Усі речі';
   let showAllCards = false;
 
+  // Застосовує вибрану категорію, пошуковий запит і правило початкових шести карток.
+  // Атрибути data-specs та data-story також беруть участь у пошуку, хоча не видно в картці.
   function renderCatalog() {
     const query = catalogSearch?.value.trim().toLocaleLowerCase('uk-UA') || '';
     let visibleCount = 0;
@@ -17,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const matchesCategory = selectedCategory === 'Усі речі' || card.dataset.category.trim() === selectedCategory;
       const searchableText = [card.textContent, card.dataset.specs, card.dataset.story].join(' ').toLocaleLowerCase('uk-UA');
       const matchesSearch = !query || searchableText.includes(query);
+      // Категорійний фільтр і пошук показують усі збіги; обмеження шістьма картками діє лише спочатку.
       const withinInitialBatch = showAllCards || selectedCategory !== 'Усі речі' || Boolean(query) || index < 6;
       const visible = matchesCategory && matchesSearch && withinInitialBatch;
       card.classList.remove('hidden-card', 'show-card');
@@ -32,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   categoryBtns.forEach(btn => {
     btn.addEventListener('click', function() {
+      // У стані зберігається текст кнопки, тому підписи фільтрів мають збігатися з data-category товарів.
       categoryBtns.forEach(categoryBtn => categoryBtn.classList.remove('active'));
       this.classList.add('active');
       selectedCategory = this.textContent.trim();
@@ -43,28 +48,31 @@ document.addEventListener('DOMContentLoaded', function() {
   catalogSearch?.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       event.preventDefault();
+      // Після підтвердження запиту прокручуємо сторінку до каталогу, не перезавантажуючи її.
       catalog?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 
   if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', function() {
+      // Прапорець зберігає вибір користувача, а renderCatalog оновлює видимість карток.
       showAllCards = true;
       renderCatalog();
     });
   }
   renderCatalog();
 
-  // Interactive before/after comparison in the hero CTA destination.
+  // 2. Повзунок порівняння фотографій до та після відновлення
   const comparisonFrame = document.querySelector('[data-before-after]');
   const comparisonRange = comparisonFrame?.querySelector('.before-after-range');
   if (comparisonFrame && comparisonRange) {
+    // Значення повзунка задає межу обрізання верхнього зображення через CSS-змінну --split.
     const updateComparison = () => comparisonFrame.style.setProperty('--split', `${comparisonRange.value}%`);
     comparisonRange.addEventListener('input', updateComparison);
     updateComparison();
   }
 
-  // 3. Обране (Wishlist)
+  // 3. Список обраного
   const wishlistButtons = document.querySelectorAll('.wishlist-btn');
   const wishlistModalBtn = document.getElementById('wishlist-modal-btn');
   const wishlistModal = document.getElementById('wishlist-modal');
@@ -75,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let wishlist = [];
 
+  // Кнопка-сердечко перемикає стан товару та синхронно оновлює лічильники й вміст вікна обраного.
   wishlistButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.stopPropagation(); // Щоб не відкривалось модальне вікно товару
@@ -107,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
+    // Формуємо список заново з поточного масиву, щоб лічильники й кнопки завжди відповідали стану.
     let html = '';
     wishlist.forEach(item => {
       html += `
@@ -129,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     wishlistContainer.querySelectorAll('.wishlist-item-open').forEach(openButton => {
       openButton.addEventListener('click', function() {
+        // Знаходимо вихідну картку за ідентифікатором і відкриваємо її повні деталі.
         const card = document.querySelector(`.product-card[data-id="${this.closest('.wishlist-modal-item').dataset.id}"]`);
         if (!card) return;
         wishlistModal.classList.remove('open');
@@ -138,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     wishlistContainer.querySelectorAll('.remove-wishlist-item').forEach(remBtn => {
       remBtn.addEventListener('click', function() {
+        // Видаляємо позицію зі списку та повертаємо сердечку на картці звичайний вигляд.
         const itemElement = this.closest('.wishlist-modal-item');
         const idToRemove = itemElement.getAttribute('data-id');
 
@@ -159,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
   wishlistModal.addEventListener('click', (e) => { if (e.target === wishlistModal) wishlistModal.classList.remove('open'); });
 
 
-  // 4. Кошик покупок (Cart)
+  // 4. Кошик і оформлення замовлення
   const cartModalBtn = document.getElementById('cart-modal-btn');
   const cartModal = document.getElementById('cart-modal');
   const closeCartModalBtn = document.getElementById('close-cart-modal-btn');
@@ -176,6 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let cart = [];
 
+  // Кнопка кошика лише додає товар до масиву; відкриття каталожної картки зупиняється окремо.
   addToCartButtons.forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
@@ -206,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     cartFooter.hidden = false;
+    // Під час кожного оновлення заново рахуємо суму та будуємо актуальний список позицій.
     let html = '';
     let total = 0;
 
@@ -242,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
   closeCartModalBtn.addEventListener('click', () => cartModal.classList.remove('open'));
   cartModal.addEventListener('click', (e) => { if (e.target === cartModal) cartModal.classList.remove('open'); });
   checkoutToggle.addEventListener('click', () => {
+    // Форма відкривається окремим кроком і одразу переводить фокус на поле імені.
     checkoutToggle.hidden = true;
     checkoutForm.hidden = false;
     checkoutToggle.setAttribute('aria-expanded', 'true');
@@ -256,6 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
     event.preventDefault();
     const name = checkoutForm.elements.name.value.trim();
     const total = cart.reduce((sum, item) => sum + item.price, 0).toLocaleString('uk-UA') + ' ₴';
+    // Це демонстраційне оформлення: показуємо підтвердження та очищаємо локальний кошик.
     cart.length = 0;
     checkoutForm.reset();
     updateCartUI();
@@ -266,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 
-  // 5. Модальне вікно деталей товару та форма замовлення
+  // 5. Деталі товару та форма замовлення з його картки
   const productDetailModal = document.getElementById('product-detail-modal');
   const closeProductModal = document.getElementById('close-product-modal');
   const detailImg = document.getElementById('detail-img');
@@ -278,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const orderForm = document.getElementById('order-form');
 
   function openProductDetails(card) {
+    // Дані для вікна читаємо з картки; історія й характеристики зберігаються в її data-атрибутах.
     const title = card.querySelector('.product-title').textContent;
     detailImg.src = card.querySelector('.product-image').src;
     detailCategory.textContent = card.querySelector('.product-category').textContent;
@@ -290,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   allCards.forEach(card => {
     card.addEventListener('click', function(e) {
-      // Якщо клікнули на сердечко чи кнопку кошика — не відкриваємо деталі
+      // Кнопки обраного та кошика виконують власні дії, тому не відкриваємо поверх них деталі товару.
       if (e.target.closest('.wishlist-btn') || e.target.closest('.add-to-cart-btn')) return;
       openProductDetails(card);
     });
@@ -299,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
   closeProductModal.addEventListener('click', () => productDetailModal.classList.remove('open'));
   productDetailModal.addEventListener('click', (e) => { if (e.target === productDetailModal) productDetailModal.classList.remove('open'); });
 
-  // Обробка форми замовлення
+  // Обробляємо замовлення з картки товару без перезавантаження сторінки.
   orderForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const name = document.getElementById('buyer-name').value;

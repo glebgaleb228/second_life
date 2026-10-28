@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f5f2e9">
   <meta name="description" content="Вінтажні меблі, декор і техніка з історією. Перевірені майстрами, відновлені з турботою та готові до нового дому.">
   <title>Друге життя — Речі, які заслуговують на друге життя</title>
-  <!-- Підключення шрифтів Google Fonts -->
+  <!-- Шрифти підключаються окремо, а Georgia та sans-serif залишаються резервними варіантами. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -14,14 +14,14 @@
 </head>
 <body>
 
-  <!-- Верхня інфо-строка -->
+  <!-- Верхній інформаційний банер із короткими умовами покупки. -->
   <div class="top-banner">
     <span>БЕЗКОШТОВНА ДОСТАВКА ВІД 3 000 ₴</span>
     <span class="dot">•</span>
     <span>ПОВЕРНЕННЯ ПРОТЯГОМ 14 ДНІВ</span>
   </div>
 
-  <!-- Шапка сайту -->
+  <!-- Шапка закріплена під час прокручування та містить навігацію, пошук і лічильники. -->
   <header class="header">
     <div class="container header-container">
       <a href="#" class="logo">
@@ -29,7 +29,7 @@
         <span class="logo-text">друге життя</span>
       </a>
 
-      <!-- Функціональна навігація -->
+      <!-- Посилання ведуть до відповідних секцій сторінки за їхніми ідентифікаторами. -->
       <nav class="nav">
         <a href="#catalog" class="nav-link">Каталог</a>
         <a href="#how-it-works" class="nav-link">Як це працює</a>
@@ -39,15 +39,15 @@
 
       <div class="header-actions">
         <label class="search-box"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" placeholder="Знайти річ…" aria-label="Пошук у каталозі"></label>
-        <!-- Кнопка обраного -->
+        <!-- Кнопка відкриває список обраного; лічильник оновлюється зі скрипту. -->
         <button id="wishlist-modal-btn" class="icon-btn wishlist-icon-btn" aria-label="Обране">❤️ <span id="wishlist-counter">0</span></button>
-        <!-- Кнопка кошика -->
+        <!-- Кнопка відкриває кошик; число поруч показує кількість доданих позицій. -->
         <button id="cart-modal-btn" class="icon-btn wishlist-icon-btn" aria-label="Кошик">🛍️ <span id="cart-counter">0</span></button>
       </div>
     </div>
   </header>
 
-  <!-- Hero Секція -->
+  <!-- Початковий екран знайомить із крамницею та веде до каталогу або порівняння реставрації. -->
   <section class="hero" id="hero">
     <div class="hero-left">
       <div class="hero-content">
@@ -115,7 +115,7 @@
     </div><div class="inspection-visual"><img src="https://images.unsplash.com/photo-1581539250439-c96689b516dd?auto=format&fit=crop&w=1000&q=85" alt="Майстер уважно відновлює вінтажні меблі" loading="lazy"><div class="inspection-stamp"><strong>42</strong><span>пункти<br>перевірки</span></div><p>Друга молодість, збережений характер.</p></div>
   </div></section>
 
-  <!-- Секція переваг -->
+  <!-- Короткий перелік умов і переваг, які важливі перед покупкою. -->
   <section class="features" id="features">
     <div class="container features-grid">
       <div class="feature-item">
@@ -149,7 +149,7 @@
     </div>
   </section>
 
-  <!-- Секція Каталогу -->
+  <!-- Каталог: категорії в кнопках мають точно збігатися з data-category у картках товарів. -->
   <section class="catalog" id="catalog">
     <div class="container">
       
@@ -160,7 +160,7 @@
           <h2 class="section-title">Обрані речі чекають на дім</h2>
         </div>
 
-        <!-- Категорії / Фільтри -->
+        <!-- Підписи кнопок використовуються скриптом як значення активного фільтра. -->
         <div class="catalog-categories">
           <button class="category-btn active">Усі речі</button>
           <button class="category-btn">Меблі</button>
@@ -170,7 +170,7 @@
         </div>
       </div>
 
-      <!-- Сітка товарів -->
+      <!-- Кожна картка зберігає категорію, характеристики й історію в data-атрибутах для фільтрації та вікна деталей. -->
       <div class="products-grid">
 
         <!-- Товар 1 -->
@@ -307,7 +307,7 @@
           </div>
         </div>
 
-        <!-- Додаткові товари -->
+        <!-- Наступні товари спочатку приховані; кнопка внизу каталогу відкриває решту карток. -->
         <div class="product-card hidden-card" data-id="7" data-category="Меблі" data-specs="Тип: Двомісний диван; Каркас: Натуральне дерево; Тканина: Букльо преміум-класу." data-story="Диван у стилі Mid-Century поєднує легкий силует і відкриті дерев’яні ніжки. Його каркас відновили, а тканину замінили на фактурне букле. Тепер він знову створений для неспішних ранків і гостей, які засиджуються допізна.">
           <div class="product-image-container">
             <span class="product-badge badge-restored">Відновлено</span>
@@ -441,7 +441,7 @@
 
       <p id="catalog-empty-state" class="catalog-empty-state" hidden>Нічого не знайшлося. Спробуйте змінити запит або категорію.</p>
 
-      <!-- Кнопка розширення каталогу -->
+      <!-- Кнопка показується лише для початкового списку без активного фільтра чи пошуку. -->
       <div class="catalog-more">
         <button id="load-more-btn" class="btn btn-primary">Показати ще речі →</button>
       </div>
@@ -471,7 +471,7 @@
     </div>
   </section>
 
-  <!-- МОДАЛЬНЕ ВІКНО ОБРАНОГО -->
+  <!-- Модальне вікно обраного: список усередині створює JavaScript. -->
   <section class="stories-section" id="stories"><div class="container">
     <div class="stories-heading"><div><span class="subtitle">РЕЧІ З ПРОДОВЖЕННЯМ</span><h2 class="section-title">У кожної знахідки — своя історія</h2></div><p>Трохи часу, турботи й новий дім — ось як починається наступна глава.</p></div>
     <div class="stories-grid">
@@ -493,7 +493,7 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНЕ ВІКНО КОШИКА -->
+  <!-- Модальне вікно кошика містить список, підсумок і приховану до запиту форму оформлення. -->
   <div id="cart-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="cart-heading">
     <div class="modal-content">
       <div class="modal-header">
@@ -521,7 +521,7 @@
     </div>
   </div>
 
-  <!-- МОДАЛЬНЕ ВІКНО ДЕТАЛЕЙ ТОВАРУ ТА ФОРМИ ЗАМОВЛЕННЯ -->
+  <!-- Модальне вікно картки заповнюється з data-атрибутів вибраного товару. -->
   <div id="product-detail-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="detail-title">
     <div class="modal-content product-detail-content">
       <button id="close-product-modal" class="close-modal" aria-label="Закрити">&times;</button>
@@ -540,7 +540,7 @@
           </div>
           <div class="detail-story-box"><span>ІСТОРІЯ РЕЧІ</span><p id="detail-story"></p></div>
 
-          <!-- Форма замовлення -->
+          <!-- Форма збирає контактні дані для демонстраційного оформлення замовлення. -->
           <form id="order-form" class="order-form">
             <h4>Швидке замовлення</h4>
             <input type="text" id="buyer-name" placeholder="Ваше ім'я" required class="form-input">
@@ -553,7 +553,7 @@
     </div>
   </div>
 
-  <!-- Підключення скрипта -->
+  <!-- Скрипт підключено внизу документа, щоб HTML-елементи вже існували під час запуску логіки. -->
   <script src="script.js" defer></script>
 </body>
 </html>
