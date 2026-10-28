@@ -205,6 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const detailTitle = document.getElementById('detail-title');
   const detailPrice = document.getElementById('detail-price');
   const detailSpecs = document.getElementById('detail-specs');
+  const detailStory = document.getElementById('detail-story');
   const orderForm = document.getElementById('order-form');
 
   allCards.forEach(card => {
@@ -223,6 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
       detailTitle.textContent = title;
       detailPrice.textContent = price;
       detailSpecs.textContent = specs;
+      if (detailStory) detailStory.textContent = card.dataset.story || '';
 
       productDetailModal.classList.add('open');
     });
